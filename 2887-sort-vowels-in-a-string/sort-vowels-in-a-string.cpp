@@ -1,20 +1,26 @@
 class Solution {
 public:
     string sortVowels(string s) {
-        string vowels = "";
-        for(int i=0; i<s.length(); i++) {
-            if(s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u' || 
-            s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U' ) {
-                vowels += s[i];
-            }
+        string vowel = "AEIOUaeiou";
+        int n = s.length();
+        unordered_map<char, int> mp;
+        for(int i=0; i<n; i++) {
+            mp[s[i]]++;            
         }
 
-        sort(vowels.begin(), vowels.end());
-        int k = 0;
-        for(int i=0; i<s.length(); i++) {
-            if(s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u' || 
-            s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U'  ) {
-                s[i] = vowels[k++];
+        int j = 0;
+        for(int i=0; i<n; i++) {
+            if(s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U' ||
+            s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u') {
+                while(true) {
+                    if( mp[vowel[j]] > 0) {
+                        s[i] = vowel[j];
+                        mp[vowel[j]]--;
+                        break;
+                    }
+                    j++;
+                }
+                
             }
         }
         return s;
