@@ -1,21 +1,20 @@
 class Solution {
 public:
     vector<int> findDiagonalOrder(vector<vector<int>>& nums) {
-        unordered_map<int, vector<int>> mp;
-        for(int i=nums.size()-1; i>=0; i--) {
-            for(int j=0; j<nums[i].size(); j++) {
-                int diagonal = i + j;
-                mp[diagonal].push_back(nums[i][j]);
-            }
-        }
-
+        queue<pair<int, int>> q;
+        q.push({0, 0});
         vector<int> ans;
-        int diagonal = 0;
-        while(mp.find(diagonal) != mp.end()) {
-            for(int &num : mp[diagonal]) {
-                ans.push_back(num);
+        while(!q.empty()) {
+            int row = q.front().first;
+            int col = q.front().second;
+            q.pop();
+            ans.push_back(nums[row][col]);
+            if(col == 0 && row+1 < nums.size()) {
+                q.push({row+1, col});
             }
-            diagonal++;
+            if(col+1 < nums[row].size()) {
+                q.push({row, col+1});
+            }
         }
         return ans;
     }
