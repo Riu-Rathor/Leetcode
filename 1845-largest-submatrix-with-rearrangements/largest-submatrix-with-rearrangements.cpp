@@ -1,27 +1,41 @@
 class Solution {
 public:
     int largestSubmatrix(vector<vector<int>>& matrix) {
-        int n = matrix.size();
-        int m = matrix[0].size();
-        int ans = 0;
-        vector<int> prevHeight(m, 0);
-        for(int i=0; i<n; i++) {
-            vector<int> currHeight = matrix[i];
-            for(int j=0; j<m; j++) {
-                if(currHeight[j] == 1) {
-                    currHeight[j] = currHeight[j] + prevHeight[j];
-                }
-                
-            }
-            vector<int> temp = currHeight;
-            sort(temp.begin(), temp.end(), greater<int>());
-            for(int k=0; k<temp.size(); k++) {
-                if(temp[k] >= 1) {
-                    ans = max(ans, temp[k]*(k+1));
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int maxArea = 0;
+        vector<pair<int, int>> prevHeights; // {height, column}
+
+        for(int row=0; row<m; row++) {
+            vector<pair<int, int>> currHeight;
+            vector<bool> visited(n, false);
+            for(auto [height, col] : prevHeights) {
+                if(matrix[row][col] == 1) {
+                    currHeight.push_back({height+1, col});
+                    visited[col] = true;
                 }
             }
-            prevHeight = currHeight;
+
+
+            for(int col=0; col<n; col++) {
+                if(!visited[col] && matrix[row][col] == 1) {
+                    currHeight.push_back({1, col});
+                }
+            }
+
+            for(int i=0; i<currHeight.size(); i++) {
+                int H = currHeight[i].first;
+                int base = i+1;
+                maxArea = max(maxArea, H*base);
+            }
+
+            prevHeights = currHeight;
+        
+
+
+
         }
-        return ans;
+        return maxArea;
+
     }
 };
