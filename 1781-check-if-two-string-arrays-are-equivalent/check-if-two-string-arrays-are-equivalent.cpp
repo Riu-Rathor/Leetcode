@@ -11,10 +11,7 @@ public:
         for(auto i: word2) {
             s2 += i;
         }
+        return s1 == s2;
 
-        if(s1 == s2) {
-            return true;
-        }
-        return false;
     }
 };
