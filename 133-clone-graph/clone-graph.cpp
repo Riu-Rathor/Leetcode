@@ -35,14 +35,36 @@ public:
             }
         }
     }
+
+    void bfs(queue<Node*> q, unordered_map<Node*, Node*> &mp) {
+        while(!q.empty()) {
+            Node* node = q.front();
+            Node* clone_node = mp[node];
+            q.pop();
+            for(Node* n : node->neighbors) {
+                if(mp.find(n) == mp.end()) {
+                    Node* clone = new Node(n->val);
+                    mp[n] = clone;
+                    clone_node->neighbors.push_back(clone);
+                    q.push(n);
+                }
+                else {
+                    clone_node->neighbors.push_back(mp[n]);
+                }
+            }
+        }
+    }
     Node* cloneGraph(Node* node) {
         if(!node) {
             return NULL;
         }
-        Node* clone_node = new Node(node->val);
+        Node* clone_node = new Node(node->val);         
         unordered_map<Node*, Node*> mp;
         mp[node] = clone_node;
-        dfs(node, clone_node, mp);
+        queue<Node*> q;
+        q.push(node);
+         bfs(q, mp);
+        // dfs(node, clone_node, mp, queue);
         return clone_node;
     }
 };
