@@ -16,13 +16,13 @@ public:
             return;
         }
 
-        ans.push_back(root->val + '0');
+        ans.append(to_string(root->val));
         if(root->left) {
             ans.push_back('(');
             solve(root->left, ans);
             ans.push_back(')');
         }
-        else if(root->right) {
+        if(root->right) {
             if(!root->left) {
                 ans += "()";
             }
@@ -32,29 +32,29 @@ public:
         }
     }
     string tree2str(TreeNode* root) {
-        // string ans = "";
-        // solve(root, ans);
-        // return ans;
-        if(root == NULL) {
-            return "";
-        }
+        string ans = "";
+        solve(root, ans);
+        return ans;
+        // if(root == NULL) {
+        //     return "";
+        // }
 
-        string ans = to_string(root->val);
-        string Left = tree2str(root->left);
-        string Right = tree2str(root->right);
+        // string ans = to_string(root->val);
+        // string Left = tree2str(root->left);
+        // string Right = tree2str(root->right);
 
-        if(!root->left && !root->right) {
-            return ans;
-        }
-        if(root->left == NULL) {
-            return ans + "()" + "(" + Right + ")";
-        }
+        // if(!root->left && !root->right) {
+        //     return ans;
+        // }
+        // if(root->left == NULL) {
+        //     return ans + "()" + "(" + Right + ")";
+        // }
 
-        if(root->right == NULL) {
-            return ans + "(" + Left + ")";
-        }
+        // if(root->right == NULL) {
+        //     return ans + "(" + Left + ")";
+        // }
 
-        return ans + "(" + Left + ")" + "(" + Right + ")";
+        // return ans + "(" + Left + ")" + "(" + Right + ")";
 
     }
 };
