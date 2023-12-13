@@ -23,10 +23,14 @@ public:
                 if(mat[i][j] == 0) {
                     continue;
                 }
-                if(isSpecial(i,j,n,m,mat)) {
-                    ans++; 
+                if(mat[i][j] == 1) {
+                    if(isSpecial(i,j,n,m,mat)) {
+                        ans++; 
+                    }
+                    else {
+                        break;
+                    }
                 }
-                
             }
         }
         return ans;
