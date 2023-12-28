@@ -33,10 +33,24 @@ public:
         }
         return dp[n];
     }
+
+    // Space optimization
+    int solveSpace(int n) {
+        // vector<int> dp(n+1, 0);
+        int prev = 1;
+        int curr = 1;
+        for(int i=2; i<=n; i++) {
+            int temp = curr;
+            curr =  prev + curr; 
+            prev = temp;
+        }
+        return curr;
+    }
     int climbStairs(int n) {
         vector<int> dp(n+1, -1);
         // return solve(n);
         // return solveMem(n, dp);
-        return solveTab(n);
+        // return solveTab(n);
+        return solveSpace(n);
     }
 };
