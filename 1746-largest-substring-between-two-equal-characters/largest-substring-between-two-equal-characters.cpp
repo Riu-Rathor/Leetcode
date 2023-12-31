@@ -1,23 +1,15 @@
 class Solution {
 public:
     int maxLengthBetweenEqualCharacters(string s) {
-        int starting[26];
-        int ending[26];
+        unordered_map<char, int> firstIndex;
         int ans = -1;
-        for(int i=0; i<26; i++) {
-            starting[i] = -1;
-            ending[i] = -1;
-        }
-        for(int i=0; i<s.length(); i++) {
-            if(starting[s[i]-'a'] == -1) {
-                starting[s[i]-'a'] = i;
-            }
-            ending[s[i]-'a'] = i;
-        }
 
-        for(int i=0; i<26; i++) {
-            if(starting[i] != -1 && ending[i] != -1 && starting[i] != ending[i]) {
-                ans = max(ans, ending[i] - starting[i] - 1);
+        for(int i=0; i<s.length(); i++) {
+            if(firstIndex.find(s[i]) != firstIndex.end()) {
+                ans = max(ans, i - firstIndex[s[i]] - 1);
+            }
+            else {
+                firstIndex[s[i]] = i;
             }
         }
         return ans;
