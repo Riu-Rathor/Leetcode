@@ -12,11 +12,8 @@ public:
             if(s[j] >= g[i]) {
                 ans++;
                 i++;
-                j++;
             }
-            else {
-                j++;
-            }
+            j++;
         }
         return ans;
     }
