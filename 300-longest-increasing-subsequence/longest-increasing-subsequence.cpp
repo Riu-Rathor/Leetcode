@@ -67,7 +67,7 @@ class Solution {
             }
             nextRow = currRow;
         }
-        return nextRow[0];        
+        return currRow[0];        
     }
 public:
     int lengthOfLIS(vector<int>& nums) {
