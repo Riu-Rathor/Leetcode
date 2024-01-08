@@ -16,12 +16,15 @@ public:
             return 0;
         }
 
+        int ans = 0;
+        if(root->val >= low && root->val <= high) {
+            ans = root->val;
+        }
+
         int left = rangeSumBST(root->left, low, high);
         int right = rangeSumBST(root->right, low, high);
-        int ans = left + right;
-        if(root->val >= low && root->val <= high) {
-            ans += root->val;
-        }
+        ans = left + right + ans;
+        
         return ans;
     }
 };
