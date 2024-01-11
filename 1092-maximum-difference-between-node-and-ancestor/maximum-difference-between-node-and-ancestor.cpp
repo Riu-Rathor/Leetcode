@@ -10,29 +10,25 @@
  * };
  */
 class Solution {
-    void findMaxDiffUtil(TreeNode* root, TreeNode* child, int &maxDiff) {
-        if(!root || !child) {
-            return;
-        }
-        maxDiff = max(maxDiff, abs(root->val - child->val));
-        findMaxDiffUtil(root, child->left, maxDiff);
-        findMaxDiffUtil(root, child->right, maxDiff);
-    }
-
-    void findMaxDiff(TreeNode* root, int &maxDiff) {
+    int findMaxDiff(TreeNode* root, int mini, int maxi) {
         if(!root) {
-            return;
+            return abs(mini - maxi);
         }
-        findMaxDiffUtil(root, root->left, maxDiff);
-        findMaxDiffUtil(root, root->right, maxDiff);
-        findMaxDiff(root->left, maxDiff);
-        findMaxDiff(root->right, maxDiff);
-    }
 
+        mini = min(mini, root->val);
+        maxi = max(maxi, root->val);
+        int leftAns = findMaxDiff(root->left, mini, maxi);
+        int rightAns = findMaxDiff(root->right, mini, maxi);
+        return max(leftAns, rightAns);
+    }
 public:
     int maxAncestorDiff(TreeNode* root) {
-        int maxDiff = -1;
-        findMaxDiff(root, maxDiff);
-        return maxDiff;
+        if(!root) {
+            return 0;
+        }
+        
+        int mini = root->val;
+        int maxi = root->val;
+        return findMaxDiff(root, mini, maxi);
     }
 };
