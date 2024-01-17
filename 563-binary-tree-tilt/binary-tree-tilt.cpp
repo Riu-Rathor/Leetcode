@@ -25,7 +25,7 @@ public:
             return 0;
         }
         int ans = 0;
-        int sum = solve(root, ans);
+        solve(root, ans);
         return ans;
     }
 };
