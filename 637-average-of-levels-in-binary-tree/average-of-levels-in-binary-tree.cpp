@@ -30,7 +30,8 @@ public:
                 }
             }
             double avg = sum / n;
-            ans.push_back(round(avg * 1e5) / 1e5);
+            // ans.push_back(round(avg * 1e5) / 1e5);
+            ans.push_back(avg);
         }
         return ans;        
     }
