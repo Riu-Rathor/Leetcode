@@ -10,13 +10,28 @@ class Solution {
             return solve(n/2, dp) + 1;
         }
     }
+
+    // Tabular 
+    vector<int> solveTab(int n) {
+        vector<int> dp(n+1, 0);
+        for(int i=1; i<=n; i++) {
+            if(i%2 == 0) {
+                dp[i] =dp[i/2];
+            }
+            else {
+                dp[i] = dp[i/2] + 1;
+            }
+        }
+        return dp;
+        
+    }
 public:
     vector<int> countBits(int n) {
         vector<int> ans;
-        vector<int> dp(n+1, -1);
-        for(int i=0; i<=n; i++) {
-            ans.push_back(solve(i, dp));
+        if(n == 0) {
+            return {0};
         }
+        ans = solveTab(n);
         return ans;
         
     }
