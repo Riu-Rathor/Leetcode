@@ -10,10 +10,22 @@ class Solution {
         int exclude = solve(nums, n, index+1, dp);
         return dp[index] = max(include, exclude);
     }
+    
+    // tabular dp
+    int solveTab(vector<int> &nums, int n) {
+        vector<int> dp(n+1, 0);
+        for(int index=n-1; index >= 0; index--) {
+            int include = nums[index] + (index + 2 < n ? dp[index+2] : 0);
+            int exclude = dp[index+1];
+            dp[index] = max(include, exclude);
+        }
+        return dp[0];    
+    }
 public:
     int rob(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n+1, -1);
-        return solve(nums, n, 0, dp);
+        // vector<int> dp(n+1, -1);
+        // return solve(nums, n, 0, dp);
+        return solveTab(nums, n);
     }
 };
