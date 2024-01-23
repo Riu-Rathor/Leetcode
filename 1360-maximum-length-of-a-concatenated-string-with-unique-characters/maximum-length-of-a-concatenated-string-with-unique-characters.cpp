@@ -1,44 +1,39 @@
 class Solution {
-    bool isValid(int index, vector<string> &arr, unordered_map<char, int> &mp) {        
-        bool isPresent = false;
-        unordered_map<char, int> temp;
-        for(int i=0; i<arr[index].length(); i++) {
-            if(mp.find(arr[index][i]) != mp.end()) {
-                isPresent = true;
-                break;
+    bool hasDuplicate(string s1, string s2) {
+        int freq[26] = {0};
+        for(char &ch : s1) {
+            if(freq[ch-'a'] > 0) {
+                return true;
             }
-            if(temp.find(arr[index][i]) != temp.end()) {
-                isPresent = true;
-                break;
-            }
-            temp[arr[index][i]]++;            
+            freq[ch-'a']++;
         }
-        return isPresent;
+        for(char &ch : s2) {
+            if(freq[ch-'a'] > 0) {
+                return true;
+            }
+        }
+        return false;
     }
-
-    int solve(int index, int n, vector<string> &arr, unordered_map<char, int> &mp) {
-        if(index >= n) {
-            return 0;
+    int solve(int i, vector<string> &arr, string temp, int n) {
+        if(i >= n) {
+            return temp.length();
         }
         int include = 0;
-        int exclude = 0;        
-
-        if(!isValid(index, arr, mp)) {
-            for(int i=0; i<arr[index].length(); i++) {
-                mp[arr[index][i]]++;
-            }
-            include = arr[index].length() + solve(index+1, n, arr, mp);
-            for(int i=0; i<arr[index].length(); i++) {
-                mp.erase(arr[index][i]);
-            }
+        int exclude = 0;
+        if(hasDuplicate(arr[i], temp)) {
+            exclude = solve(i+1, arr, temp, n);
         }
-        exclude = solve(index+1, n, arr, mp);
+        else {
+            exclude = solve(i+1, arr, temp, n);
+            include = solve(i+1, arr, temp+arr[i], n);
+        }
         return max(include, exclude);
     }
 public:
     int maxLength(vector<string>& arr) {
         int n = arr.size();
-        unordered_map<char, int> mp;
-        return solve(0, n, arr, mp);
+        string temp = "";
+        int i = 0;
+        return solve(i, arr, temp, n);
     }
 };
