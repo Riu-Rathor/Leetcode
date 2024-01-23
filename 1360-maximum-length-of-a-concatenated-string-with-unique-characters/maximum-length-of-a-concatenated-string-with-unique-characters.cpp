@@ -1,10 +1,5 @@
 class Solution {
-    int solve(int index, int n, vector<string> &arr, unordered_map<char, int> &mp) {
-        if(index >= n) {
-            return 0;
-        }
-        int include = 0;
-        int exclude = 0;
+    bool isValid(int index, vector<string> &arr, unordered_map<char, int> &mp) {        
         bool isPresent = false;
         unordered_map<char, int> temp;
         for(int i=0; i<arr[index].length(); i++) {
@@ -18,8 +13,17 @@ class Solution {
             }
             temp[arr[index][i]]++;            
         }
+        return isPresent;
+    }
 
-        if(!isPresent) {
+    int solve(int index, int n, vector<string> &arr, unordered_map<char, int> &mp) {
+        if(index >= n) {
+            return 0;
+        }
+        int include = 0;
+        int exclude = 0;        
+
+        if(!isValid(index, arr, mp)) {
             for(int i=0; i<arr[index].length(); i++) {
                 mp[arr[index][i]]++;
             }
