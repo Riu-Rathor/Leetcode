@@ -10,28 +10,26 @@
  * };
  */
 class Solution {
-    void solve(TreeNode* root, int &count, vector<int> &freq) {
+    void solve(TreeNode* root, int &count, int val) {
         if(!root) {
             return;
         }
-        freq[root->val]++;
+        val = val ^ (1 << root->val);
         if(!root->left && !root->right) {
-            int oddCount = 0;
-            for(int i=1; i<freq.size(); i++) {
-                if(freq[i] % 2 != 0) oddCount++;
+            if((val & (val - 1)) == 0) {
+                count++;
             }
-            if(oddCount <= 1) count++;
         }
-        solve(root->left, count, freq);
-        solve(root->right, count, freq);        
-        freq[root->val]--;
+        solve(root->left, count, val);
+        solve(root->right, count, val);
+
     }
 
 public:
     int pseudoPalindromicPaths (TreeNode* root) {
         int count = 0;
         vector<int> freq(10, 0);
-        solve(root, count, freq);
+        solve(root, count, 0);
         return count;
     }
 };
