@@ -1,38 +1,24 @@
-// #define MOD 1e9+7
+#define MOD 1000000007
 class Solution {
-    int M;
-    int N;
-    int MOD = 1e9+7;
-    vector<vector<int>> directions{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    int t[51][51][51];
-    int solve(int maxMove, int startRow, int startColumn) {
-        if(startRow < 0 || startRow >= M || startColumn < 0 || startColumn >= N) {
-            return 1; //Found one path out
+    int solve(int m, int n, int maxMove, int i, int j, vector<vector<vector<int>>> &dp) {
+        if(i < 0 || i >= m || j < 0 || j >= n) {
+            return 1;
         }
-
-        if(maxMove <= 0) 
+        if(maxMove <= 0) {
             return 0;
-
-        if(t[maxMove][startRow][startColumn] != -1) {
-            return t[maxMove][startRow][startColumn];
         }
-
-        int result = 0;
-        for(auto &dir : directions) {
-            int x = startRow    + dir[0];
-            int y = startColumn + dir[1];
-            
-            result = (result + solve(maxMove-1, x, y)) % MOD;
+        if(dp[i][j][maxMove] != -1) {
+            return dp[i][j][maxMove];
         }
-
-        return t[maxMove][startRow][startColumn] = result%MOD;
-
+        long long  up = solve(m, n, maxMove-1, i-1, j, dp) % MOD;
+        long long  down = solve(m, n, maxMove-1, i+1, j, dp) % MOD;
+        long long left = solve(m, n, maxMove-1, i, j-1, dp) % MOD;
+        long long right = solve(m, n, maxMove-1, i, j+1, dp) % MOD;
+        return dp[i][j][maxMove] = (left + right + up + down) % MOD;
     }
 public:
     int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        memset(t, -1, sizeof(t));
-        M = m;
-        N = n;
-        return solve(maxMove, startRow, startColumn);
+        vector<vector<vector<int>>> dp(m+1, vector<vector<int>>(n+1, vector<int>(maxMove+1, -1)));
+        return solve(m, n, maxMove, startRow, startColumn, dp);
     }
 };
