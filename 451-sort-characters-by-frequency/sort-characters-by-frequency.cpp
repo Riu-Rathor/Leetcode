@@ -1,27 +1,29 @@
+#define P pair<char, int>
+
 class Solution {
+    struct lambda {
+            bool operator()(P &p1, P &p2) {
+                return p1.second < p2.second;
+            }
+        };
 public:
     string frequencySort(string s) {
-         unordered_map<char, int> mp;
-        vector<pair<int, char>> v;
-        string ans = "";
-
-        // count character frequency
-        for(auto ch: s){
+        priority_queue<P, vector<P>, lambda> pq;
+        unordered_map<char, int> mp;
+        for(char &ch : s) {
             mp[ch]++;
         }
 
-        // push from map to vector 
-        for(auto i: mp){
-            v.push_back({i.second, i.first});
+        for(auto &it : mp) {
+            pq.push({it.first, it.second});
         }
+        string result = "";
 
-        // sort the vector in decreasing order
-        sort(v.begin(), v.end(), greater<pair<int, char>>());
-
-        // add to final answer string
-        for(auto i: v){
-            while(i.first--) ans += i.second;
+        while(!pq.empty()) {
+            P temp = pq.top();
+            pq.pop();
+            result += string(temp.second, temp.first);
         }
-        return ans;
+        return result;
     }
 };
