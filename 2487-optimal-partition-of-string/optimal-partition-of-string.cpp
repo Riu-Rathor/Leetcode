@@ -1,23 +1,16 @@
 class Solution {
 public:
     int partitionString(string s) {
-        // int freq[26] = {0};
-        vector<int> v;
-        int ans = 1;
-        for(int i=0; i<s.length(); i++) {
-            int charToDigit = s[i] - 'a';
-            // if(freq[charToDigit] != 0) {
-            if(find(v.begin(), v.end(), s[i]) != v.end()) {
+        int n = s.length();
+        int ans = 0;
+        unordered_set<char> st;
+        for(int i=0; i<n; i++) {
+            if(st.find(s[i]) != st.end()) {
                 ans++;
-                // fill(begin(freq), end(freq), 0);
-                v.clear();
-                // freq[charToDigit]++;
-                v.push_back(s[i]);
+                st.clear();
             }
-            else {
-                v.push_back(s[i]);
-            }
+            st.insert(s[i]);
         }
-        return ans;
+        return ans+1;
     }
 };
