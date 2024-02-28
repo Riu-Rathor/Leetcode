@@ -11,22 +11,28 @@
  */
 class Solution {
 
-    void solve(TreeNode* root, int &level, int depth, int &ans) {
+    void solve(TreeNode* root, int level, int &depth, int &ans) {
         if(!root) {
             return;
         }
-        solve(root->left, level, depth + 1, ans);
-        if(depth > level) {
+         if(level > depth) {
+            depth = level;
             ans = root->val;
-            level = depth;
         }
-        solve(root->right, level, depth + 1, ans);
+        solve(root->left, level+1, depth, ans);
+        solve(root->right, level+1, depth, ans);
+       
     }
 public:
     int findBottomLeftValue(TreeNode* root) {
-        int ans = 0;
+        if(!root) {
+            return 0;
+        }
+
+        int depth = 0;
         int level = 0;
-        solve(root, level, 1, ans);
+        int ans = root->val;
+        solve(root, level, depth, ans);
         return ans;
     }
 };
