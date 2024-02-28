@@ -30,8 +30,8 @@ public:
         }
 
         int depth = 0;
-        int level = 0;
-        int ans = root->val;
+        int level = 1;
+        int ans = 0;
         solve(root, level, depth, ans);
         return ans;
     }
