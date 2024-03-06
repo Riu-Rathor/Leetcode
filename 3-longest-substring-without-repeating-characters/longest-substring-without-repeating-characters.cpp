@@ -7,7 +7,6 @@ public:
         int ans = 0;
         for(int right=0; right<n; right++) {
             if(st.count(s[right]) == 0) {
-                st.insert(s[right]);
                 ans = max(ans, right - left + 1);
             }
             else {
@@ -15,8 +14,8 @@ public:
                     st.erase(s[left]);
                     left++;
                 }
-                st.insert(s[right]);
             }
+            st.insert(s[right]);
         }
         return ans;
     }
