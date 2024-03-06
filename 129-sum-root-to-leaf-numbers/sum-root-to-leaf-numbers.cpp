@@ -14,14 +14,11 @@ class Solution {
         if(!root) {
             return;
         }
-
+        sum = sum * 10 + root->val;
         if(!root->left && !root->right) {
-            sum = sum * 10 + root->val;
             ansSum += sum;
             return;
         }
-
-        sum = sum * 10 + root->val;
         solve(root->left, ansSum, sum);
         solve(root->right, ansSum, sum);
     }
