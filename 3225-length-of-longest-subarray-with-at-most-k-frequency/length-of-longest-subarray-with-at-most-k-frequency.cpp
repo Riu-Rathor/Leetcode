@@ -6,13 +6,24 @@ public:
         int i = 0;
         int j = 0;
         int ans = 0;
+        int culprit = 0;
         while(j < n) {
             freq[nums[j]]++;
-            while(freq[nums[j]] > k) {
+            if(freq[nums[j]] == k + 1) {
+                culprit++;
+            }
+
+            if(culprit > 0) {
                 freq[nums[i]]--;
+                if(freq[nums[i]] == k) {
+                    culprit--;
+                }
                 i++;
             }
-            ans = max(ans, j-i+1);
+
+            if(culprit == 0) {
+                ans = max(ans, j - i + 1);
+            }
             j++;
         }
         return ans;
