@@ -13,6 +13,6 @@ public:
         node->val = nextNode->val;
         node->next = nextNode->next;
         nextNode->next = NULL;
-        delete nextNode;       
+        delete nextNode;
     }
 };
