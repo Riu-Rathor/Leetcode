@@ -4,31 +4,33 @@ public:
         int n = score.size();
         vector<string> result(n);
         
-        priority_queue<pair<int, int>> pq;
+        int max_score = *max_element(begin(score), end(score));
+        vector<int> arr(max_score + 1, -1);
         for(int i=0; i<n; i++) {
-            pq.push({score[i], i});
+            arr[score[i]] = i;
         }
-
+        
         int rank = 1;
-        while(!pq.empty()) {
-            int index = pq.top().second;
-            pq.pop();
+        for(int i=max_score; i>=0; i--) {
+            if(arr[i] != -1) {
+                int athelete = arr[i];
 
-            if(rank == 1) {
-                result[index] = "Gold Medal";
+                if(rank == 1) {
+                    result[athelete] = "Gold Medal";
+                }
+                else if(rank == 2) {
+                    result[athelete] = "Silver Medal";
+                }
+                else if(rank == 3) {
+                    result[athelete] = "Bronze Medal";
+                }
+                else {
+                    result[athelete] = to_string(rank);
+                }
+                rank++;
             }
-            else if(rank == 2) {
-                result[index] = "Silver Medal";
-            }
-            else if(rank == 3) {
-                result[index] = "Bronze Medal";
-            }
-            else {
-                result[index] = to_string(rank);
-            } 
-            rank++;
+
         }
-
         return result;
     }
 };
