@@ -12,16 +12,26 @@
 class Solution {
 public:
     bool evaluateTree(TreeNode* root) {
+        if(!root) {
+            return true;
+        }
+
         if(!root->left && !root->right) {
-            return root->val;
+            if(root->val == 1) {
+                return true;
+            }
+            else if(root->val == 0) {
+                return false;
+            }
         }
-        bool leftAns = evaluateTree(root->left);
-        bool rightAns = evaluateTree(root->right);
+
+        bool left_ans = evaluateTree(root->left);
+        bool right_ans = evaluateTree(root->right);
+
         if(root->val == 2) {
-            return leftAns || rightAns;
+            return left_ans || right_ans;
         }
-        else {
-            return leftAns && rightAns;
-        }
+
+        return left_ans && right_ans;
     }
 };
