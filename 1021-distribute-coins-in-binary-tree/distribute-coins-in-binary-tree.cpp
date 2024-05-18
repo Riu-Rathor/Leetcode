@@ -1,6 +1,6 @@
 /**
  * Definition for a binary tree node.
- * struct TreeNode {
+ * struct TreeNode {+ 
  *     int val;
  *     TreeNode *left;
  *     TreeNode *right;
@@ -14,10 +14,11 @@ class Solution {
         if(!root) {
             return 0;
         }
-        int leftAns = solve(root->left, steps);
-        int rightAns = solve(root->right, steps);
-        steps += abs(leftAns) + abs(rightAns);
-        return leftAns + rightAns + root->val - 1;
+
+        int left_ans = solve(root->left, steps);
+        int right_ans = solve(root->right, steps);
+        steps += abs(left_ans) + abs(right_ans);
+        return left_ans + right_ans + root->val - 1;
     }
 public:
     int distributeCoins(TreeNode* root) {
