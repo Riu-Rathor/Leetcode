@@ -1,29 +1,23 @@
 class Solution {
 
-    void solve(vector<int> &nums, int index, vector<vector<int>> &subsets, vector<int> &currSubset) {
+    int solve(vector<int> &nums, int index, int Xor) {
         if(index == nums.size()) {
-            subsets.push_back(currSubset);
-            return;
+            return Xor;
         }
 
-        currSubset.push_back(nums[index]);
-        solve(nums, index+1, subsets, currSubset);
-        currSubset.pop_back();
-        solve(nums, index+1, subsets, currSubset);
+        
+        int include = solve(nums, index+1, Xor^nums[index]);
+        int exclude = solve(nums, index+1, Xor);
+        return include + exclude;
     }
 public:
     int subsetXORSum(vector<int>& nums) {
-        vector<vector<int>> subsets;
-        vector<int> currSubset;
-        solve(nums, 0, subsets, currSubset);
+        // return solve(nums, 0, 0);
+        int n = nums.size();
         int result = 0;
-        for(vector<int> &subset : subsets) {
-            int Xor = 0;
-            for(int &num : subset) {
-                Xor ^= num;
-            }
-            result += Xor;
+        for(int &num : nums) {
+            result |= num;
         }
-        return result;
+        return result << (n-1);
     }
 };
