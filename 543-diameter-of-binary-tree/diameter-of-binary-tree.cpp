@@ -11,14 +11,14 @@
  */
 class Solution {
 
-    int heightOfTree(TreeNode* root, int &ans) {
+    int solve(TreeNode* root, int &ans) {
         if(!root) {
             return 0;
         }
-        int leftAns = heightOfTree(root->left, ans);
-        int rightAns = heightOfTree(root->right, ans);
-        ans = max(ans, leftAns + rightAns);
-        return 1 + max(leftAns, rightAns);
+        int left = solve(root->left, ans);
+        int right = solve(root->right, ans);
+        ans = max(ans, left + right);
+        return 1 + max(left, right);
     }
 public:
     int diameterOfBinaryTree(TreeNode* root) {
@@ -26,7 +26,9 @@ public:
             return 0;
         }
         int ans = INT_MIN;
-        heightOfTree(root, ans);
+        solve(root, ans);
         return ans;
+
+
     }
 };
