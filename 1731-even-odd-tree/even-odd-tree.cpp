@@ -9,42 +9,37 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {   
+class Solution {
+
+    bool solve(TreeNode* root, int level, vector<int> &levelPrev) {
+        if(!root) {
+            return true;
+        }
+
+        if((level % 2 == 0 && root->val % 2 == 0) || (level % 2 != 0 && root->val % 2 != 0)) {
+            return false;
+        }
+
+        if(level >= levelPrev.size()) {
+            levelPrev.resize(level+1);
+        }
+
+        if(levelPrev[level] != 0) {
+            if(level % 2 == 0 && root->val <= levelPrev[level]) {
+                return false;
+            }
+
+            if(level % 2 != 0 && root->val >= levelPrev[level]) {
+                return false;
+            }
+        }
+        levelPrev[level] = root->val;
+        return solve(root->left, level+1, levelPrev) && solve(root->right, level+1, levelPrev);
+
+    }
 public:
     bool isEvenOddTree(TreeNode* root) {
-        queue<TreeNode*> q;
-        q.push(root);
-        bool even_level = true;
-        while(!q.empty()) {
-            int n = q.size();
-            int prev;
-            if(even_level) {
-                prev = INT_MIN;
-            }
-            else {
-                prev = INT_MAX;
-            }
-            while(n--) {
-                TreeNode* curr = q.front();
-                q.pop();
-                if(even_level && (curr->val % 2 == 0 || curr->val <= prev)) {
-                    return false;
-                }
-
-                if(!even_level && (curr->val % 2 == 1 || curr->val >= prev)) {
-                    return false;
-                }
-                prev = curr->val;
-                if(curr->left) {
-                    q.push(curr->left);
-                }
-
-                if(curr->right) {
-                    q.push(curr->right);
-                }
-            }
-            even_level = !even_level;
-        }
-        return true;
+        vector<int> levelPrev;
+        return solve(root, 0, levelPrev);
     }
 };
