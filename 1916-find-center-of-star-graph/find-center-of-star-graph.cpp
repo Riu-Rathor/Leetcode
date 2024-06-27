@@ -1,18 +1,16 @@
 class Solution {
 public:
     int findCenter(vector<vector<int>>& edges) {
-        int n = edges.size();
-        vector<int> freq(n+2, 0);
-        for(int i=0; i<n; i++) {
-            int u = edges[i][0];
-            int v = edges[i][1];
-            freq[u]++;
-            freq[v]++;
+        unordered_map<int, vector<int>> mp;
+        for(auto edge : edges) {
+            mp[edge[0]].push_back(edge[1]);
+            mp[edge[1]].push_back(edge[0]);
         }
+        int n = mp.size();
 
-        for(int i=1; i<=n+1; i++) {
-            if(freq[i] >= n) {
-                return i;
+        for(auto it : mp) {
+            if(it.second.size() == n-1) {
+                return it.first;
             }
         }
         return -1;
