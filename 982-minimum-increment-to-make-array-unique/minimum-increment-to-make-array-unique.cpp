@@ -2,14 +2,21 @@ class Solution {
 public:
     int minIncrementForUnique(vector<int>& nums) {
         int n = nums.size();
-        sort(nums.begin(), nums.end());
-        int moves = 0;
+        int maxElement = *max_element(nums.begin(), nums.end());
+        vector<int> count(n+maxElement, 0);
 
-        for(int i=1; i<n; i++) {
-            if(nums[i] <= nums[i-1]) {
-                moves += nums[i-1] - nums[i] + 1;
-                nums[i] = nums[i-1] + 1;
+        for(int &num : nums) {
+            count[num]++;
+        }
+        int moves = 0;
+        for(int i=0; i<n+maxElement; i++) {
+            if(count[i] <= 1) {
+                continue;
             }
+            int extra = count[i] - 1;
+            count[i+1] += extra;
+            count[i] = 1;
+            moves += extra;
         }
         return moves;
     }
