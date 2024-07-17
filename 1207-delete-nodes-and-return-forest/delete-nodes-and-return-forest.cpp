@@ -10,14 +10,13 @@
  * };
  */
 class Solution {
-
-    TreeNode* deleteNodes(TreeNode* root, unordered_set<int> &st, vector<TreeNode*> &result) {
+    TreeNode* solve(TreeNode* root, unordered_set<int> &st, vector<TreeNode*> &result) {
         if(!root) {
             return NULL;
         }
 
-        root->left = deleteNodes(root->left, st, result);
-        root->right = deleteNodes(root->right, st, result);
+        root->left = solve(root->left, st, result);
+        root->right = solve(root->right, st, result);
 
         if(st.find(root->val) != st.end()) {
             if(root->left) {
@@ -32,22 +31,17 @@ class Solution {
         else {
             return root;
         }
+
     }
 public:
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        unordered_set<int> st(to_delete.begin(), to_delete.end());
         vector<TreeNode*> result;
-        unordered_set<int> st;
-        for(int &num : to_delete) {
-            st.insert(num);
-        }
+        solve(root, st, result);
 
-        deleteNodes(root, st, result);
-        
         if(st.find(root->val) == st.end()) {
             result.push_back(root);
         }
-
-        return result;
-
+        return result;        
     }
 };
