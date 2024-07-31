@@ -1,25 +1,16 @@
 class Solution {
 public:
     int minimumDeletions(string s) {
-        int n = s.length();
-        int countA = 0;
-        int countB = 0;
-        for(int i=n-1; i>=0; i--) {
-            if(s[i] == 'a') {
-                countA++;
-            }
+    stack<char> st;
+    int count = 0;
+    for(char c: s) {
+        if(!st.empty() && st.top() == 'b' && c == 'a') {
+            st.pop();
+            count++;
+        } else {
+            st.push(c);
         }
-
-        int minimumDeletion = INT_MAX;
-        for(int i=0; i<n; i++) {
-            if(s[i] == 'a') {
-                countA--;
-            }
-            minimumDeletion = min(minimumDeletion, (countA + countB));
-            if(s[i] == 'b') {
-                countB++;
-            }
-        }
-        return minimumDeletion;
     }
+    return s.length() - st.size() - count;
+}
 };
