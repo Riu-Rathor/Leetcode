@@ -1,27 +1,59 @@
 class Solution {
-    void dfs(vector<vector<int>>& stones, int index, vector<bool> &visited) {
-        visited[index] = true;
+    int find(int u, vector<int> &parent) {
+        if(u == parent[u]) {
+            return u;
+        }
+        return parent[u] = find(parent[u], parent);
+    }
 
-        for(int i=0; i<stones.size(); i++) {
-            int r = stones[index][0];
-            int c = stones[index][1];
-            if(!visited[i] && (stones[i][0] == r || stones[i][1] == c)) {
-                dfs(stones, i, visited);
-            }
+    void Union(int u, int v, vector<int> &parent, vector<int> &rank) {
+        int parent_u = find(u, parent);
+        int parent_v = find(v, parent);
+
+        if(parent_u == parent_v) {
+            return;
+        }
+
+        if(rank[parent_u] > rank[parent_v]) {
+            parent[parent_v] = parent_u;
+        }
+        else if(rank[parent_u] < rank[parent_v]) {
+            parent[parent_u] = parent_v;
+        }
+        else {
+            parent[parent_v] = parent_u;
+            rank[parent_u]++;
         }
     }
 public:
     int removeStones(vector<vector<int>>& stones) {
         int n = stones.size();
-        vector<bool> visited(n, false);
+        vector<int> parent(n);
+        vector<int> rank(n, 0);
 
-        int grps = 0;
         for(int i=0; i<n; i++) {
-            if(!visited[i]) {
-                dfs(stones, i, visited);
-                grps++;
+            parent[i] = i;
+        }
+
+        for(int i=0; i<n; i++) {
+            for(int j=i+1; j<n; j++) {
+                int r1 = stones[i][0];
+                int c1 = stones[i][1];
+                int r2 = stones[j][0];
+                int c2 = stones[j][1];
+
+                if(r1 == r2 || c1 == c2) {
+                    Union(i, j, parent, rank);
+                }
             }
         }
-        return n - grps;
+
+        int grp = 0;
+        for(int i=0; i<n; i++) {
+            if(parent[i] == i) {
+                grp++;
+            }
+        }
+        return n - grp;
     }
 };
