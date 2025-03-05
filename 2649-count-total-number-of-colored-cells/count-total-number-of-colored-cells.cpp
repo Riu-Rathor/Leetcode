@@ -1,16 +1,15 @@
 class Solution {
-    long long solve(int n, vector<long long> &dp) {
-        if(n == 1) {
-            return 1;
+    long long solve(int n) {
+        vector<long long> dp(n+1, 0);
+        dp[1] = 1;
+
+        for(int i=2; i<=n; i++) {
+            dp[i] = dp[i-1] + 4*(i-1);
         }
-        if(dp[n] != -1) {
-            return dp[n];
-        }
-        return dp[n] = solve(n-1, dp) + 4*(n-1);
+        return dp[n];
     }
 public:
     long long coloredCells(int n) {
-        vector<long long> dp(n+1, -1);
-        return solve(n, dp);
+        return solve(n);
     }
 };
