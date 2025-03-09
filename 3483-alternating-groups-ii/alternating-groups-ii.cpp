@@ -21,6 +21,7 @@ public:
         for(int i=0; i<k-1; i++) {
             if(colors[i] == lastColor) {
                 length = 1;
+                break;
             }
             else {
                 length++;
