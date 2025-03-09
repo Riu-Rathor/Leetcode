@@ -1,25 +1,20 @@
 class Solution {
+    void dfs(vector<vector<int>>& rooms, int u, unordered_set<int> &st, vector<bool> &visited) {
+        visited[u] = true;
+        st.insert(u);
 
-    void dfs(vector<vector<int>> &rooms, int src, vector<bool> &visited) {
-        visited[src] = true;
-        for(int &node: rooms[src]) {
-            if(!visited[node]) {
-                dfs(rooms, node, visited);
+        for(int &v : rooms[u]) {
+            if(!visited[v]) {
+                dfs(rooms, v, st, visited);
             }
         }
     }
 public:
     bool canVisitAllRooms(vector<vector<int>>& rooms) {
         int n = rooms.size();
-        vector<bool> visited(n);
-        visited[0] = true;
-        dfs(rooms, 0, visited);
-
-        for(bool vis : visited) {
-            if(vis == false) {
-                return false;
-            }
-        }
-        return true;
+        unordered_set<int> st;
+        vector<bool> visited(n, false);
+        dfs(rooms, 0,  st, visited);
+        return st.size() == n;
     }
 };
