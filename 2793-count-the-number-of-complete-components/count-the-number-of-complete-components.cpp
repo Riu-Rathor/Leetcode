@@ -1,45 +1,60 @@
 class Solution {
-    void bfs(unordered_map<int, vector<int>> &adj, vector<int> &visited, int u, int &nodes, int &edges) {
-        queue<int> q;
-        q.push(u);
-        visited[u] = true;
+     void Union(int u, int v, vector<int> &parent, vector<int> &size) {
+        int parent_u = find(u, parent);
+        int parent_v = find(v, parent);
 
-        while(!q.empty()) {
-            int node = q.front();
-            q.pop();
-            nodes++;
-            edges += adj[node].size();
-            for(int &v : adj[node]) {
-                if(!visited[v]) {
-                    visited[v] = true;
-                    q.push(v);
-                }
-            }
+        if (parent_u == parent_v) return;
+
+        if (size[parent_u] > size[parent_v]) {
+            parent[parent_v] = parent_u;
+            size[parent_u] += size[parent_v];
+        } else {
+            parent[parent_u] = parent_v;
+            size[parent_v] += size[parent_u];
         }
+    }
+    int find(int i, vector<int> &parent) {
+        if(i == parent[i]) {
+            return i;
+        }
+
+        return parent[i] = find(parent[i], parent);
     }
 public:
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
-        unordered_map<int, vector<int>> adj;
+        vector<int> parent(n);
+        vector<int> size(n);
+        unordered_map<int, int> mp;
+        for(int i=0; i<n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+
         for(vector<int> &edge : edges) {
             int u = edge[0];
             int v = edge[1];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+            Union(u, v, parent, size);
         }
 
-        vector<int> visited(n, false);
-        int result = 0;
+        for(vector<int> &edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int root = find(u, parent);
+            mp[root]++;
+        }
 
+        int result = 0;
         for(int i=0; i<n; i++) {
-            if(!visited[i]) {
-                int edges = 0;
-                int nodes = 0;
-                bfs(adj, visited, i, nodes, edges);
-                if((edges) == (nodes * (nodes - 1))) {
+            if(find(i, parent) == i) {
+                int v = size[i];
+                int e = mp[i];
+
+                if((v*(v-1)/2) == e) {
                     result++;
                 }
             }
         }
         return result;
     }
+
 };
