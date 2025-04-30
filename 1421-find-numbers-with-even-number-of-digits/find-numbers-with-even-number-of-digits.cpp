@@ -1,12 +1,7 @@
 class Solution {
     int findLength(int n) {
-        int count = 0;
-        while(n) {
-            n = n / 10;
-            count++;
-        }
-        return count;
-
+        string num = to_string(n);
+        return num.length();
     }
 public:
     int findNumbers(vector<int>& nums) {
