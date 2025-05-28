@@ -1,24 +1,11 @@
 class Solution {
-    int bfs(int curr, unordered_map<int, vector<int>> &adj, int k, int n) {
-        queue<pair<int, int>> q;
-        q.push({curr, 0});
-        vector<bool> visited(n, false);
-        visited[curr] = true;
-        int count = 0;
+    int dfs(int curr, unordered_map<int, vector<int>> &adj, int k, int currNodeParent) {
+        if(k < 0) return 0;
 
-        while(!q.empty()) {
-            int node = q.front().first;
-            int d = q.front().second;
-            q.pop();
-            if(d > k) {
-                continue;
-            }
-            count++;
-            for(auto &ngbr : adj[node]) {
-                if(!visited[ngbr]) {
-                    visited[ngbr] = true;
-                    q.push({ngbr, d+1});
-                }
+        int count = 1;
+        for(int &ngbr : adj[curr]) {
+            if(ngbr != currNodeParent) {
+                count += dfs(ngbr, adj, k-1, curr);
             }
         }
         return count;
@@ -35,9 +22,10 @@ class Solution {
         }
         
         vector<int> result(n);
+        
 
         for(int i=0; i<n; i++) {
-            result[i] = bfs(i, adj, k, n);
+            result[i] = dfs(i, adj, k, -1);
         }
         return result;
     }
